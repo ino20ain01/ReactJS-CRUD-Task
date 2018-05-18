@@ -25,7 +25,7 @@ class TaskForm extends Component {
                             </select>
                         </div>
                         <div className="form-group pull-right">
-                            <button type="submit" className="btn btn-success"><i className="fa fa-plus-circle"></i> Lưu</button>&nbsp;
+                            <button type="submit" className="btn btn-success"><i className="fa fa-plus-circle"></i> Thêm</button>&nbsp;
                             <button type="reset" className="btn btn-danger"><i className="fa fa-remove"></i> Hủy</button>
                         </div>
                     </form>
