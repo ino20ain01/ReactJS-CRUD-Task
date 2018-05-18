@@ -6,9 +6,12 @@ class TaskList extends Component {
     render() {
 
         var { tasks } = this.props,
+            elmTask = [];
+        if (tasks) {
             elmTask = tasks.map((task, index) => {
                 return <TaskItem key={ task.id + '-' + index} task={ task } index={ index } />
             });
+        }
         return (
             <div className="row mt-2">
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">

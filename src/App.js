@@ -10,14 +10,16 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tasks: []
+            tasks: [],
+            isDisplayForm: false
         }
         this.onGenerateData = this.onGenerateData.bind(this);
+        this.onCloseForm = this.onCloseForm.bind(this);
     }
 
     componentWillMount() {
         if (typeof(Storage) !== "undefined") {
-            var tasks = JSON.parse(localStorage.getItem('tasks'));
+            var tasks = JSON.parse(localStorage.getItem('tasks')) ? JSON.parse(localStorage.getItem('tasks')) : [];
             this.setState({
                 tasks: tasks
             });
@@ -47,36 +49,67 @@ class App extends Component {
         }
     }
 
+    onToogleForm = () => {
+        this.setState({
+            isDisplayForm: !this.state.isDisplayForm
+        });
+    }
+
+    onCloseForm()  {
+        this.setState({
+            isDisplayForm: false
+        });
+    }
+
+    onSubmit = (params) => {
+        if (params.name) {
+            var { tasks } = this.state;
+            params.id = Math.random() + '-' + Math.random();
+            tasks.push(params);
+            this.setState({
+                tasks: tasks
+            });
+            if (typeof(Storage) !== "undefined") {
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+            }
+        }
+    }
+
     render() {
 
-        var { tasks } = this.state;
-
+        var { tasks, isDisplayForm } = this.state;
+        var elmTaskForm = isDisplayForm ? <TaskForm
+                                            onCloseForm={ this.onCloseForm }
+                                            onSubmit={ this.onSubmit }
+                                            /> : '';
         return (
             <div className="container">
                 <div className="text-center">
                     <h1>QUẢN LÝ CÔNG VIỆC</h1>
                 </div>
                 <div className="row">
-                    <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div className={ elmTaskForm ? 'col-xs-4 col-sm-4 col-md-4 col-lg-4' : '' }>
                         {/* FORM */}
-                        <TaskForm />
+                        { elmTaskForm }
                     </div>
-                    <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                        <button className="btn btn-primary">
+                    <div className={ elmTaskForm ? 'col-xs-8 col-sm-8 col-md-8 col-lg-8' : 'col-xs-12 col-sm-12 col-md-12 col-lg-12' }>
+                        <button
+                            className="btn btn-primary"
+                            onClick={ this.onToogleForm }
+                        >
                             <i className="fa fa-plus"></i> Thêm công việc
                         </button>&nbsp;
-                        <button
-                            className="btn btn-warning"
-                            onClick={ this.onGenerateData }>
-                            <i className="fa fa-hand-spock-o"></i> Generate Data
-                        </button>
+                        {/*<button*/}
+                            {/*className="btn btn-warning"*/}
+                            {/*onClick={ this.onGenerateData }>*/}
+                            {/*<i className="fa fa-hand-spock-o"></i> Generate Data*/}
+                        {/*</button>*/}
 
                         {/* SEARCH - SORT */}
                         <Filter />
                         {/* TASK LIST */}
                         <TaskList tasks={ tasks } />
                     </div>
-
                 </div>
             </div>
         );
