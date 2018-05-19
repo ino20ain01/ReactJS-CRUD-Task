@@ -9,7 +9,12 @@ class TaskList extends Component {
             elmTask = [];
         if (tasks) {
             elmTask = tasks.map((task, index) => {
-                return <TaskItem key={ task.id + '-' + index} task={ task } index={ index } />
+                return <TaskItem
+                    key={ task.id + '-' + index}
+                    task={ task } index={ index }
+                    onUpdateStatus={ this.props.onUpdateStatus }
+                    onDelete={ this.props.onDelete }
+                />
             });
         }
         return (

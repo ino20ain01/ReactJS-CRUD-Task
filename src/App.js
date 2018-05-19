@@ -75,6 +75,46 @@ class App extends Component {
         }
     }
 
+    onUpdateStatus = (id) => {
+        var { tasks } = this.state;
+        var index = this.findIndex(id);
+        if (index !== -1) {
+            tasks[index].status = !tasks[index].status;
+            this.setState({
+                tasks: tasks
+            });
+            if (typeof(Storage) !== "undefined") {
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+            }
+        }
+    }
+
+    onDelete = (id) => {
+        var { tasks } = this.state;
+        var index = this.findIndex(id);
+        if (index !== -1) {
+            tasks.splice(index, 1)
+            this.setState({
+                tasks: tasks
+            });
+            if (typeof(Storage) !== "undefined") {
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+            }
+        }
+        this.onCloseForm();
+    }
+
+    findIndex = (id) => {
+        var { tasks } = this.state,
+            result = -1;
+        tasks.forEach(function (task, index) {
+            if (task.id === id) {
+                result = index;
+            }
+        });
+        return result;
+    }
+
     render() {
 
         var { tasks, isDisplayForm } = this.state;
@@ -108,7 +148,7 @@ class App extends Component {
                         {/* SEARCH - SORT */}
                         <Filter />
                         {/* TASK LIST */}
-                        <TaskList tasks={ tasks } />
+                        <TaskList tasks={ tasks } onDelete={ this.onDelete } onUpdateStatus={ this.onUpdateStatus } />
                     </div>
                 </div>
             </div>
