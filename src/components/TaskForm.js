@@ -5,10 +5,37 @@ class TaskForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: '',
             name: '',
             status: false
         }
         this.onChange = this.onChange.bind(this);
+    }
+
+    componentWillMount() {
+        if (this.props.task) {
+            this.setState({
+                id: this.props.task.id,
+                name: this.props.task.name,
+                status: this.props.task.status
+            });
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps && nextProps.task) {
+            this.setState({
+                id: nextProps.task.id,
+                name: nextProps.task.name,
+                status: nextProps.task.status
+            });
+        } else if (nextProps && !nextProps.task) {
+            this.setState({
+                id: '',
+                name: '',
+                status: false
+            });
+        }
     }
 
     onCloseForm = () => {
@@ -36,17 +63,21 @@ class TaskForm extends Component {
 
     onClear = () => {
         this.setState({
+            id: '',
             name: '',
             status: false
         });
     }
 
     render() {
+
+        var { id } = this.state;
+
         return (
             <div className="panel panel-primary">
                 <div className="panel-heading">
                     <h3 className="panel-title">
-                        Thêm công việc
+                        { id !== '' ? 'Cập nhật công việc' : 'Thêm công việc' }
                         <span
                             role="button"
                             className="fa fa-times-circle pull-right"
@@ -80,7 +111,7 @@ class TaskForm extends Component {
                             </select>
                         </div>
                         <div className="form-group pull-right">
-                            <button type="submit" className="btn btn-success"><i className="fa fa-plus-circle"></i> Thêm</button>&nbsp;
+                            <button type="submit" className="btn btn-success"><i className="fa fa-plus-circle"></i> Lưu</button>&nbsp;
                             <button
                                 type="button"
                                 className="btn btn-danger"
