@@ -3,9 +3,31 @@ import TaskItem from "./TaskItem";
 
 class TaskList extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            filterName: '',
+            filterStatus: -1
+        }
+    }
+
+    onChange = (e) => {
+        var target = e.target,
+            name = target.name,
+            value = target.value;
+        this.props.onFilter(
+            name === 'filterName' ? value : this.state.filterName,
+            name === 'filterStatus' ? value : this.state.filterStatus
+        )
+        this.setState({
+            [name]: value
+        });
+    }
+
     render() {
 
         var { tasks } = this.props,
+            { filterName, filterStatus } = this.state,
             elmTask = [];
         if (tasks) {
             elmTask = tasks.map((task, index) => {
@@ -34,10 +56,21 @@ class TaskList extends Component {
                         <tr>
                             <td></td>
                             <td>
-                                <input type="text" className="form-control" name="filterName" />
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="filterName"
+                                    value={ filterName }
+                                    onChange={ this.onChange }
+                                />
                             </td>
                             <td>
-                                <select name="filterStatus" id="" className="form-control">
+                                <select
+                                    name="filterStatus"
+                                    className="form-control"
+                                    value={ filterStatus }
+                                    onChange={ this.onChange }
+                                >
                                     <option value={-1}>Tất cả</option>
                                     <option value={0}>Ẩn</option>
                                     <option value={1}>Kích hoạt</option>

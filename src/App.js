@@ -12,7 +12,12 @@ class App extends Component {
         this.state = {
             tasks: [],
             isDisplayForm: false,
-            taskEditing: null
+            taskEditing: null,
+            filter: {
+                name: '',
+                status: -1
+            },
+            keyword: ''
         }
         this.onGenerateData = this.onGenerateData.bind(this);
         this.onCloseForm = this.onCloseForm.bind(this);
@@ -136,6 +141,22 @@ class App extends Component {
         this.onShowForm();
     }
 
+    onFilter = (filterName, filterStatus) => {
+        filterStatus = parseInt(filterStatus, 10);
+        this.setState({
+            filter: {
+                name: filterName.toLowerCase(),
+                status: filterStatus
+            }
+        });
+    }
+
+    onSearch = (keyword) => {
+        this.setState({
+            keyword: keyword
+        });
+    }
+
     findIndex = (id) => {
         var { tasks } = this.state,
             result = -1;
@@ -149,7 +170,26 @@ class App extends Component {
 
     render() {
 
-        var { tasks, isDisplayForm,taskEditing } = this.state;
+        var { tasks, isDisplayForm,taskEditing, filter, keyword } = this.state;
+        if (filter) {
+            if (filter.name) {
+                tasks = tasks.filter((task) => {
+                   return task.name.toLowerCase().indexOf(filter.name) !== -1;
+                });
+            }
+            tasks = tasks.filter((task) => {
+                if (filter.status === -1) {
+                    return tasks;
+                } else {
+                    return task.status === (filter.status === 1 ? true : false);
+                }
+            });
+        }
+        if (keyword) {
+            tasks = tasks.filter((task) => {
+                return task.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
+            });
+        }
         var elmTaskForm = isDisplayForm ? <TaskForm
                                             onCloseForm={ this.onCloseForm }
                                             onSubmit={ this.onSubmit }
@@ -179,13 +219,14 @@ class App extends Component {
                         {/*</button>*/}
 
                         {/* SEARCH - SORT */}
-                        <Filter />
+                        <Filter onSearch={ this.onSearch } />
                         {/* TASK LIST */}
                         <TaskList
                             tasks={ tasks }
                             onDelete={ this.onDelete }
                             onUpdate={ this.onUpdate }
                             onUpdateStatus={ this.onUpdateStatus }
+                            onFilter={ this.onFilter }
                         />
                     </div>
                 </div>
