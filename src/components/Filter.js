@@ -9,7 +9,7 @@ class Filter extends Component {
                 {/* SEARCH */}
                 <Search onSearch={ this.props.onSearch } />
                 {/* SORF */}
-                <Sort />
+                <Sort onSort={ this.props.onSort } />
             </div>
         );
     }

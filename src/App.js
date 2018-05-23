@@ -17,7 +17,11 @@ class App extends Component {
                 name: '',
                 status: -1
             },
-            keyword: ''
+            keyword: '',
+            sort: {
+                by: '',
+                value: 1
+            }
         }
         this.onGenerateData = this.onGenerateData.bind(this);
         this.onCloseForm = this.onCloseForm.bind(this);
@@ -157,6 +161,10 @@ class App extends Component {
         });
     }
 
+    onSort = (sort) => {
+        console.log(sort);
+    }
+
     findIndex = (id) => {
         var { tasks } = this.state,
             result = -1;
@@ -219,7 +227,10 @@ class App extends Component {
                         {/*</button>*/}
 
                         {/* SEARCH - SORT */}
-                        <Filter onSearch={ this.onSearch } />
+                        <Filter
+                            onSearch={ this.onSearch }
+                            onSort={ this.onSort }
+                        />
                         {/* TASK LIST */}
                         <TaskList
                             tasks={ tasks }

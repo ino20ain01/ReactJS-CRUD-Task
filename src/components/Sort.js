@@ -2,7 +2,39 @@ import React, {Component} from 'react';
 
 class Sort extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            sort: {
+                by: 'name',
+                value: 1
+            }
+        }
+    }
+
+    onClick = (sortBy, sortValue) => {
+
+        var resulSort = new Promise((resolve, reject) => {
+            resolve('Success!');
+        });
+        resulSort
+        .then((msg) => {
+            this.setState({
+                sort: {
+                    by: sortBy,
+                    value: sortValue
+                }
+            });
+        })
+        .then(() => {
+            this.props.onSort(this.state.sort);
+        });
+    }
+
     render() {
+
+        var { sort } = this.state;
+
         return (
             <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                 <div className="btn-group">
@@ -11,25 +43,25 @@ class Sort extends Component {
                         Sắp xếp <span className="caret"></span>
                     </button>
                     <ul className="dropdown-menu">
-                        <li>
+                        <li onClick={ () => {this.onClick('name', 1)} }>
                             <a role="button">
-                                <i className="fa fa-sort-alpha-asc"></i> Tên A-Z
+                                <i className="fa fa-sort-alpha-asc"></i> Tên A-Z { sort.by === 'name' && sort.value === 1 ? <i className="fa fa-check"></i> : '' }
                             </a>
                         </li>
-                        <li>
+                        <li onClick={ () => {this.onClick('name', -1)} }>
                             <a role="button">
-                                <i className="fa fa-sort-alpha-desc"></i> Tên Z-A
+                                <i className="fa fa-sort-alpha-desc"></i> Tên Z-A { sort.by === 'name' && sort.value === -1 ? <i className="fa fa-check"></i> : '' }
                             </a>
                         </li>
                         <li role="separator" className="divider"></li>
-                        <li>
+                        <li onClick={ () => {this.onClick('status', 1)} }>
                             <a role="button">
-                                Trạng thái kích hoạt
+                                Trạng thái kích hoạt { sort.by === 'status' && sort.value === 1 ? <i className="fa fa-check"></i> : '' }
                             </a>
                         </li>
-                        <li>
+                        <li onClick={ () => {this.onClick('status', -1)} }>
                             <a role="button">
-                                Trạng thái ẩn
+                                Trạng thái ẩn { sort.by === 'status' && sort.value === -1 ? <i className="fa fa-check"></i> : '' }
                             </a>
                         </li>
                     </ul>
