@@ -162,7 +162,9 @@ class App extends Component {
     }
 
     onSort = (sort) => {
-        console.log(sort);
+        this.setState({
+            sort: sort
+        });
     }
 
     findIndex = (id) => {
@@ -178,7 +180,7 @@ class App extends Component {
 
     render() {
 
-        var { tasks, isDisplayForm,taskEditing, filter, keyword } = this.state;
+        var { tasks, isDisplayForm,taskEditing, filter, keyword, sort } = this.state;
         if (filter) {
             if (filter.name) {
                 tasks = tasks.filter((task) => {
@@ -196,6 +198,19 @@ class App extends Component {
         if (keyword) {
             tasks = tasks.filter((task) => {
                 return task.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
+            });
+        }
+        if (sort.by === 'name') {
+            tasks.sort((a, b) => {
+                if (a.name > b.name) return sort.value;
+                else if (a.name < b.name) return -sort.value;
+                else return 0;
+            });
+        } else {
+            tasks.sort((a, b) => {
+                if (a.status > b.status) return -sort.value;
+                else if (a.status < b.status) return sort.value;
+                else return 0;
             });
         }
         var elmTaskForm = isDisplayForm ? <TaskForm

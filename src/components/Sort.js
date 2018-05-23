@@ -7,18 +7,18 @@ class Sort extends Component {
         this.state = {
             sort: {
                 by: 'name',
-                value: 1
+                value: 0
             }
         }
     }
 
     onClick = (sortBy, sortValue) => {
 
-        var resulSort = new Promise((resolve, reject) => {
+        var resultSort = new Promise((resolve, reject) => {
             resolve('Success!');
         });
-        resulSort
-        .then((msg) => {
+        resultSort
+        .then(() => {
             this.setState({
                 sort: {
                     by: sortBy,
