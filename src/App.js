@@ -206,7 +206,8 @@ class App extends Component {
                 else if (a.name < b.name) return -sort.value;
                 else return 0;
             });
-        } else {
+        }
+        if (sort.by === 'status') {
             tasks.sort((a, b) => {
                 if (a.status > b.status) return -sort.value;
                 else if (a.status < b.status) return sort.value;
