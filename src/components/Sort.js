@@ -15,7 +15,11 @@ class Sort extends Component {
     onClick = (sortBy, sortValue) => {
 
         var resultSort = new Promise((resolve, reject) => {
-            resolve('Success!');
+            if (sortBy && sortValue) {
+                resolve('Success!');
+            } else {
+                reject('Not parameters');
+            }
         });
         resultSort
         .then(() => {
@@ -28,7 +32,11 @@ class Sort extends Component {
         })
         .then(() => {
             this.props.onSort(this.state.sort);
-        });
+        })
+        .catch((msg) => {
+            console.log(msg);
+        })
+        ;
     }
 
     render() {
