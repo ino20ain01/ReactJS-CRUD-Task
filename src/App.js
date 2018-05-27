@@ -4,6 +4,7 @@ import './App.css';
 import TaskForm from "./components/TaskForm";
 import Filter from "./components/Filter";
 import TaskList from "./components/TaskList";
+import Demo from "./Redux/Demo";
 
 class App extends Component {
 
